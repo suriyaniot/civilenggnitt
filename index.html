@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Department Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c5530;
+            --secondary: #4a7c59;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --info: #3498db;
+            --purple: #9b59b6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .role-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .tab:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .tab.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background-color: #e6f7ee;
+            color: var(--success);
+        }
+        
+        .badge-warning {
+            background-color: #fef5e6;
+            color: var(--warning);
+        }
+        
+        .badge-danger {
+            background-color: #fdedec;
+            color: var(--danger);
+        }
+        
+        .badge-info {
+            background-color: #e8f4fd;
+            color: var(--info);
+        }
+        
+        .badge-secondary {
+            background-color: #e9ecef;
+            color: var(--gray);
+        }
+        
+        .badge-purple {
+            background-color: #f3e8fd;
+            color: var(--purple);
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a6b47;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        
+        .btn-info {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-purple {
+            background-color: var(--purple);
+            color: white;
+        }
+        
+        .btn-purple:hover {
+            background-color: #8e44ad;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.2);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .permission-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        
+        .login-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .role-option.active {
+            border-color: var(--secondary);
+            background-color: #f0f9f0;
+        }
+        
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .faculty-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faculty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .faculty-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .faculty-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .message-indicator {
+            position: relative;
+        }
+        
+        .message-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .message-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-sender {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .message-text {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .message-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-reply {
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .message-mark-read {
+            color: var(--success);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .urgent-badge {
+            background-color: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
+        
+        .reply-indicator {
+            background-color: #e8f4fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .grid-3-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .leave-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .leave-stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .leave-stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .leave-type {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .leave-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .leave-progress {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .leave-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .leave-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .leave-calendar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .calendar-date {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-date:hover {
+            background: #f8f9fa;
+        }
+        
+        .calendar-date.leave {
+            background: #e6f7ee;
+            border-color: var(--success);
+        }
+        
+        .calendar-date.holiday {
+            background: #fef5e6;
+            border-color: var(--warning);
+        }
+        
+        .leave-history-table {
+            margin-top: 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2c5530;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10000;
+            max-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .faculty-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .grid-2-col, .grid-3-col {
+                grid-template-columns: 1fr;
+            }
+            
+            .leave-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen (initially visible) -->
+    <div id="login-screen">
+        <div class="login-container">
+            <h2 class="login-title">Civil Engineering Department Portal</h2>
+            <h3 class="login-title" style="font-size: 1.2rem;">File Tracking, Hall Booking & Leave Management System</h3>
+            
+            <div class="role-selector">
+                <div class="role-option active" data-role="faculty">
+                    <i class="fas fa-user-graduate" style="font-size: 3rem; margin-bottom: 15px; color: var(--secondary);"></i>
+                    <h3>Faculty Access</h3>
+                    <p>View files, book halls and check leave status</p>
+                    <small>Click on your name to enter</small>
+                </div>
+                <div class="role-option" data-role="office-staff">
+                    <i class="fas fa-user-shield" style="font-size: 3rem; margin-bottom: 15px; color: var(--primary);"></i>
+                    <h3>Office Staff Access</h3>
+                    <p>Manage files, hall bookings and faculty leaves</p>
+                    <small>Username and password required</small>
+                </div>
+            </div>
+            
+            <!-- Faculty Selection -->
+            <div id="faculty-selection">
+                <h3 class="login-title" style="font-size: 1.1rem;">Select Your Name</h3>
+                <div class="faculty-grid" id="faculty-grid">
+                    <!-- Faculty list will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Office Staff Login -->
+            <div id="office-staff-login" style="display: none;">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%;" id="office-login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login as Office Staff
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px; color: var(--gray);">
+                    <small>Use: civiloffice / Civil@2025</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Application (initially hidden) -->
+    <div id="main-app" style="display: none;">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-university"></i>
+                        <div>
+                            <h1>Civil Engineering Department</h1>
+                            <p style="font-size: 0.9rem; opacity: 0.9;">File Tracking, Hall Booking & Leave Management System</p>
+                        </div>
+                    </div>
+                    <div class="user-info">
+                        <div>
+                            <div id="current-user">User</div>
+                            <div class="role-badge" id="current-role">Role</div>
+                        </div>
+                        <div class="message-indicator" id="message-indicator" style="display: none;">
+                            <i class="fas fa-envelope" style="font-size: 1.5rem; cursor: pointer;" id="message-icon"></i>
+                            <div class="message-badge" id="message-count">0</div>
+                        </div>
+                        <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                        <button class="btn btn-danger" id="logout-btn" style="margin-left: 15px;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="nav-tabs">
+                <div class="tab active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </div>
+                <div class="tab" data-tab="files">
+                    <i class="fas fa-file"></i> Files
+                </div>
+                <div class="tab" data-tab="movements">
+                    <i class="fas fa-exchange-alt"></i> Movements
+                </div>
+                <div class="tab" data-tab="hall-booking">
+                    <i class="fas fa-building"></i> Hall Booking
+                </div>
+                <div class="tab" data-tab="leave-management">
+                    <i class="fas fa-calendar-alt"></i> Leave Management
+                </div>
+                <div class="tab" data-tab="messages">
+                    <i class="fas fa-comments"></i> Messages
+                </div>
+                <div class="tab" data-tab="settings" id="settings-tab" style="display: none;">
+                    <i class="fas fa-cog"></i> Settings
+                </div>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div id="office-staff-only" class="permission-note" style="display: none;">
+                    <i class="fas fa-info-circle"></i> You have Office Staff privileges. You can manage files, hall bookings and faculty leaves.
+                </div>
+                
+                <div id="faculty-only" class="permission-note" style="display: none;">
+                    <i class="fas fa-info-circle"></i> You have Faculty privileges. You can view file movements, book halls and check leave status.
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--secondary);">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-files">0</h3>
+                            <p>Total Files</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--success);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="active-files">0</h3>
+                            <p>Active Files</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--warning);">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-bookings">0</h3>
+                            <p>Hall Bookings</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: var(--info);">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-leaves">0</h3>
+                            <p>Leave Records</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-2-col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent File Movements</h2>
+                            <button class="btn btn-primary" id="view-all-movements">
+                                <i class="fas fa-list"></i> View All
+                            </button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>File ID</th>
+                                    <th>File Name</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-movements">
+                                <!-- Recent movements will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Upcoming Hall Bookings</h2>
+                            <button class="btn btn-primary" id="view-all-bookings">
+                                <i class="fas fa-list"></i> View All
+                            </button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hall</th>
+                                    <th>Booked By</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="upcoming-bookings">
+                                <!-- Upcoming bookings will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Files Requiring Action</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File ID</th>
+                                <th>File Name</th>
+                                <th>Faculty</th>
+                                <th>Current Department</th>
+                                <th>Days Held</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attention-files">
+                            <!-- Files requiring attention will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Files Tab -->
+            <div id="files" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">File Inventory - Civil Engineering Department</h2>
+                        <button class="btn btn-success" id="add-file-btn" style="display: none;">
+                            <i class="fas fa-plus"></i> Add New File
+                        </button>
+                    </div>
+                    
+                    <!-- Add File Form -->
+                    <div id="add-file-form-container" class="card" style="display: none; margin-bottom: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Add New File</h3>
+                            <button class="btn btn-danger" id="cancel-add-file-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="add-file-form">
+                                <div class="grid-2-col">
+                                    <div class="form-group">
+                                        <label for="file-id">File ID</label>
+                                        <input type="text" id="file-id" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="file-name">File Name *</label>
+                                        <input type="text" id="file-name" placeholder="Enter file name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="file-faculty">Faculty *</label>
+                                        <select id="file-faculty" required>
+                                            <option value="">Select Faculty</option>
+                                            <!-- Faculty options will be populated by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="file-department">Current Department *</label>
+                                        <select id="file-department" required>
+                                            <option value="">Select Department</option>
+                                            <option value="Civil Office">Civil Office</option>
+                                            <option value="Academic Office">Academic Office</option>
+                                            <option value="R&C Office">R&C Office</option>
+                                            <option value="P&D Office">P&D Office</option>
+                                            <option value="Admin Office">Admin Office</option>
+                                            <option value="Faculty Welfare Office">Faculty Welfare Office</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="file-description">Description</label>
+                                    <textarea id="file-description" rows="3" placeholder="Enter file description"></textarea>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-danger" id="reset-add-file-form">
+                                        <i class="fas fa-undo"></i> Reset Form
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Add File
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" id="file-search" placeholder="Search files by ID, name, or faculty...">
+                        <button class="btn btn-primary" id="search-btn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File ID</th>
+                                <th>File Name</th>
+                                <th>Faculty</th>
+                                <th>Current Department</th>
+                                <th>Status</th>
+                                <th id="actions-header">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="files-table">
+                            <!-- Files will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Movements Tab -->
+            <div id="movements" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">File Movement History</h2>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="movement-search" placeholder="Search movements...">
+                        <button class="btn btn-primary" id="movement-search-btn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Movement ID</th>
+                                <th>File ID</th>
+                                <th>File Name</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Date & Time</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movements-table">
+                            <!-- Movements will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Hall Booking Tab -->
+            <div id="hall-booking" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Hall Booking System</h2>
+                        <div>
+                            <button class="btn btn-success" id="new-booking-btn">
+                                <i class="fas fa-plus"></i> New Booking
+                            </button>
+                            <button class="btn btn-primary" id="refresh-bookings-btn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Booking Form -->
+                    <div id="booking-form-container" class="card" style="display: none; margin-bottom: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">New Hall Booking</h3>
+                            <button class="btn btn-danger" id="cancel-booking-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="booking-form">
+                                <div class="grid-2-col">
+                                    <div class="form-group">
+                                        <label for="booking-date">Booking Date *</label>
+                                        <input type="date" id="booking-date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faculty-name-booking">Faculty Name *</label>
+                                        <select id="faculty-name-booking" required>
+                                            <option value="">Select Faculty</option>
+                                            <!-- Faculty options will be populated by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="start-time">Start Time *</label>
+                                        <input type="time" id="start-time" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end-time">End Time *</label>
+                                        <input type="time" id="end-time" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hall-name">Hall Name *</label>
+                                        <select id="hall-name" required>
+                                            <option value="">Select Hall</option>
+                                            <option value="Seminar Hall - Ground Floor">Seminar Hall - Ground Floor</option>
+                                            <option value="Conference Room - First Floor">Conference Room - First Floor</option>
+                                            <option value="Meeting Hall - First Floor">Meeting Hall - First Floor</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="program-name">Program Name *</label>
+                                        <input type="text" id="program-name" placeholder="Enter program/event name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks">Remarks *</label>
+                                    <textarea id="remarks" rows="3" placeholder="Enter remarks or additional details" required></textarea>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-danger" id="reset-booking-form">
+                                        <i class="fas fa-undo"></i> Reset Form
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-calendar-check"></i> Book Hall
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filters -->
+                    <div class="search-box">
+                        <input type="text" id="hall-booking-search" placeholder="Search bookings by faculty, program, or hall...">
+                        <button class="btn btn-primary" id="hall-search-btn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <select id="hall-filter" style="width: auto;">
+                            <option value="">All Halls</option>
+                            <option value="Seminar Hall - Ground Floor">Seminar Hall</option>
+                            <option value="Conference Room - First Floor">Conference Room</option>
+                            <option value="Meeting Hall - First Floor">Meeting Hall</option>
+                        </select>
+                    </div>
+
+                    <!-- Bookings Table -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Hall</th>
+                                <th>Booked By</th>
+                                <th>Program</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Remarks</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hall-bookings-table">
+                            <!-- Bookings will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Leave Management Tab -->
+            <div id="leave-management" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Leave Management System</h2>
+                        <div>
+                            <button class="btn btn-primary" id="manage-leaves-btn" style="display: none;">
+                                <i class="fas fa-cog"></i> Manage Faculty Leaves
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Faculty Leave View -->
+                    <div id="faculty-leave-view">
+                        <div class="leave-stats">
+                            <div class="leave-stat-card">
+                                <div class="leave-type">Casual Leave (CL)</div>
+                                <div class="leave-count">8</div>
+                                <div class="leave-progress">
+                                    <div class="leave-progress-bar" style="width: 0%; background-color: var(--success);"></div>
+                                </div>
+                                <div>Used: 0 days</div>
+                                <div>Remaining: 8 days</div>
+                            </div>
+                            <div class="leave-stat-card">
+                                <div class="leave-type">Special Casual Leave (SCL)</div>
+                                <div class="leave-count">15</div>
+                                <div class="leave-progress">
+                                    <div class="leave-progress-bar" style="width: 0%; background-color: var(--info);"></div>
+                                </div>
+                                <div>Used: 0 days</div>
+                                <div>Remaining: 15 days</div>
+                                <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray);">
+                                    <i class="fas fa-briefcase"></i> Working Professional
+                                </div>
+                            </div>
+                            <div class="leave-stat-card">
+                                <div class="leave-type">On Duty (OD)</div>
+                                <div class="leave-count">15</div>
+                                <div class="leave-progress">
+                                    <div class="leave-progress-bar" style="width: 0%; background-color: var(--warning);"></div>
+                                </div>
+                                <div>Used: 0 days</div>
+                                <div>Remaining: 15 days</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">My Leave History</h3>
+                            </div>
+                            <table class="leave-history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Leave ID</th>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Days</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="faculty-leave-history">
+                                    <!-- Faculty leave history will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Office Staff Leave Management View -->
+                    <div id="office-leave-management" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Faculty Leave Management</h3>
+                                <div class="search-box" style="margin-bottom: 0; width: auto;">
+                                    <input type="text" id="faculty-leave-search" placeholder="Search faculty...">
+                                    <button class="btn btn-primary" id="faculty-leave-search-btn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Faculty</th>
+                                        <th>CL Used</th>
+                                        <th>CL Balance</th>
+                                        <th>SCL Used</th>
+                                        <th>SCL Balance</th>
+                                        <th>OD Used</th>
+                                        <th>OD Balance</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="faculty-leave-summary">
+                                    <!-- Faculty leave summary will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">All Faculty Leave Records</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Leave ID</th>
+                                        <th>Faculty</th>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Days</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-leave-records">
+                                    <!-- All leave records will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Update Leave for Faculty</h3>
+                            </div>
+                            <form id="update-leave-form">
+                                <div class="grid-3-col">
+                                    <div class="form-group">
+                                        <label for="faculty-select">Faculty *</label>
+                                        <select id="faculty-select" required>
+                                            <option value="">Select Faculty</option>
+                                            <!-- Faculty options will be populated by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="leave-type">Leave Type *</label>
+                                        <select id="leave-type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="CL">Casual Leave (CL)</option>
+                                            <option value="SCL">Special Casual Leave (SCL)</option>
+                                            <option value="OD">On Duty (OD)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="leave-days">Days *</label>
+                                        <input type="number" id="leave-days" min="0.5" max="30" step="0.5" required>
+                                    </div>
+                                </div>
+                                <div class="grid-2-col">
+                                    <div class="form-group">
+                                        <label for="leave-start-date">Start Date *</label>
+                                        <input type="date" id="leave-start-date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="leave-end-date">End Date *</label>
+                                        <input type="date" id="leave-end-date" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="leave-reason">Reason *</label>
+                                    <textarea id="leave-reason" rows="3" required></textarea>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button type="reset" class="btn btn-danger">
+                                        <i class="fas fa-undo"></i> Reset Form
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Update Leave
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Messages Tab -->
+            <div id="messages" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Messages & Notifications</h2>
+                        <button class="btn btn-primary" id="new-message-btn">
+                            <i class="fas fa-plus"></i> New Message
+                        </button>
+                    </div>
+                    
+                    <div class="card" id="new-message-form" style="display: none; margin-bottom: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Compose New Message</h3>
+                            <button class="btn btn-danger" id="cancel-message-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="message-form">
+                                <div class="form-group">
+                                    <label for="message-to">To *</label>
+                                    <select id="message-to" required>
+                                        <option value="">Select Recipient</option>
+                                        <option value="all-faculty">All Faculty</option>
+                                        <option value="office-staff">Office Staff</option>
+                                        <!-- Individual faculty options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-subject">Subject *</label>
+                                    <input type="text" id="message-subject" placeholder="Enter message subject" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-content">Message *</label>
+                                    <textarea id="message-content" rows="5" placeholder="Enter your message" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="urgent-message"> Mark as Urgent
+                                    </label>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button type="reset" class="btn btn-danger">
+                                        <i class="fas fa-undo"></i> Reset Form
+                                    </button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-paper-plane"></i> Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div id="messages-container">
+                        <!-- Messages will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Account Settings</h2>
+                    </div>
+                    <div id="faculty-settings" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Change PIN Password</h3>
+                            </div>
+                            <form id="change-pin-form">
+                                <div class="grid-2-col">
+                                    <div class="form-group">
+                                        <label for="current-pin">Current PIN</label>
+                                        <input type="password" id="current-pin" placeholder="Enter current PIN">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="new-pin">New PIN</label>
+                                        <input type="password" id="new-pin" placeholder="Enter new PIN">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-pin">Confirm New PIN</label>
+                                        <input type="password" id="confirm-pin" placeholder="Confirm new PIN">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Change PIN
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Civil Engineering Department Portal &copy; 2023 | File Tracking, Hall Booking & Leave Management System</p>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="file-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">File Details</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="file-details-content">
+                <!-- File details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="file-movement-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Move File</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="file-movement-form">
+                    <div class="form-group">
+                        <label for="file-id-movement">File ID</label>
+                        <input type="text" id="file-id-movement" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="file-name-movement">File Name</label>
+                        <input type="text" id="file-name-movement" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="current-location">Current Location</label>
+                        <input type="text" id="current-location" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-location">Move To *</label>
+                        <select id="new-location" required>
+                            <option value="">Select Department</option>
+                            <option value="Same Faculty">Same Faculty</option>
+                            <option value="Civil Office">Civil Office</option>
+                            <option value="Academic Office">Academic Office</option>
+                            <option value="R&C Office">R&C Office</option>
+                            <option value="P&D Office">P&D Office</option>
+                            <option value="Admin Office">Admin Office</option>
+                            <option value="Faculty Welfare Office">Faculty Welfare Office</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="movement-remarks">Remarks *</label>
+                        <textarea id="movement-remarks" rows="3" required></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button type="button" class="btn btn-danger" id="cancel-movement">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Move File
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification" style="display: none;">
+        <div id="notification-content"></div>
+    </div>
+    
+    <script>
+        // Application State
+        const state = {
+            currentUser: null,
+            currentRole: null,
+            files: [],
+            movements: [],
+            bookings: [],
+            leaves: [],
+            messages: [],
+            faculty: [
+                { id: 1, name: "Dr. G. Swaminathan", designation: "Professor", pin: "1234" },
+                { id: 2, name: "Dr. K. Baskar", designation: "Professor", pin: "1234" },
+                { id: 3, name: "Dr. S.T. Ramesh", designation: "Professor", pin: "1234" },
+                { id: 4, name: "Dr. K. Muthukkumaran", designation: "Professor", pin: "1234" },
+                { id: 5, name: "Dr. S. Jayalekshmi", designation: "Professor", pin: "1234" },
+                { id: 6, name: "Dr. R. Gandhimathi", designation: "Professor", pin: "1234" },
+                { id: 7, name: "Dr. Nisha Radhakrishnan", designation: "Professor", pin: "1234" },
+                { id: 8, name: "Dr. V. Sunitha", designation: "Professor", pin: "1234" },
+                { id: 9, name: "Dr. R. Manjula", designation: "Professor", pin: "1234" },
+                { id: 10, name: "Dr. Deendayal", designation: "Professor", pin: "1234" },
+                { id: 11, name: "Dr. S. Saravanan", designation: "Professor", pin: "1234" },
+                { id: 12, name: "Dr. R. SenthilKumar", designation: "Professor", pin: "1234" },
+                { id: 13, name: "Dr. S. Marisamynathan", designation: "Professor", pin: "1234" },
+                { id: 14, name: "Dr. Jeevan Joseph", designation: "Professor", pin: "1234" },
+                { id: 15, name: "Dr. R. Raghavan", designation: "Professor", pin: "1234" },
+                { id: 16, name: "Dr. Prabha Mohandoss", designation: "Professor", pin: "1234" },
+                { id: 17, name: "Dr. Masudha Sulthana", designation: "Professor", pin: "1234" },
+                { id: 18, name: "Dr. Darshana O", designation: "Professor", pin: "1234" },
+                { id: 19, name: "Dr. Greegar George", designation: "Professor", pin: "1234" },
+                { id: 20, name: "Dr. Aneesh Mathew", designation: "Professor", pin: "1234" },
+                { id: 21, name: "Dr. Kamal Krishna Bera", designation: "Professor", pin: "1234" },
+                { id: 22, name: "Dr. Laiju A. R.", designation: "Professor", pin: "1234" },
+                { id: 23, name: "Mrs. R. Arachelvi", designation: "Assistant Professor", pin: "1234" },
+                { id: 24, name: "Dr. J. Sevugan Rajkanuu", designation: "Assistant Professor", pin: "1234" },
+                { id: 25, name: "Dr. Chandaluri Vinay Kumar", designation: "Assistant Professor", pin: "1234" },
+                { id: 26, name: "Dr. Vanama Raghava Kumar", designation: "Assistant Professor", pin: "1234" },
+                { id: 27, name: "Dr. C. Makendran", designation: "Assistant Professor", pin: "1234" },
+                { id: 28, name: "Dr. Laveti NV Satish", designation: "Assistant Professor", pin: "1234" },
+                { id: 29, name: "Dr. Lekshmi Mohan", designation: "Assistant Professor", pin: "1234" },
+                { id: 30, name: "Dr. Santhosh Loganathan", designation: "Assistant Professor", pin: "1234" },
+                { id: 31, name: "Dr. Prabu P", designation: "Assistant Professor", pin: "1234" },
+                { id: 32, name: "Dr. Ritvik Chawhan", designation: "Assistant Professor", pin: "1234" }
+            ],
+            officeStaff: [
+                { id: 1, name: "Mr. Suresh Kumar", designation: "Office Superintendent" },
+                { id: 2, name: "Ms. Anita Desai", designation: "Office Assistant" }
+            ],
+            fileCounter: 1
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Set up event listeners for login screen
+            setupLoginScreen();
+            
+            // Set up event listeners for main application
+            setupMainApp();
+            
+            // Generate sample data
+            generateSampleData();
+            
+            // Populate faculty selection
+            populateFacultySelection();
+        }
+
+        function setupLoginScreen() {
+            // Role selection
+            const roleOptions = document.querySelectorAll('.role-option');
+            roleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    roleOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const role = this.getAttribute('data-role');
+                    if (role === 'faculty') {
+                        document.getElementById('faculty-selection').style.display = 'block';
+                        document.getElementById('office-staff-login').style.display = 'none';
+                    } else {
+                        document.getElementById('faculty-selection').style.display = 'none';
+                        document.getElementById('office-staff-login').style.display = 'block';
+                    }
+                });
+            });
+            
+            // Faculty selection
+            document.getElementById('faculty-grid').addEventListener('click', function(e) {
+                const facultyCard = e.target.closest('.faculty-card');
+                if (facultyCard) {
+                    const facultyId = parseInt(facultyCard.getAttribute('data-id'));
+                    const faculty = state.faculty.find(f => f.id === facultyId);
+                    if (faculty) {
+                        const pin = prompt(`Enter PIN for ${faculty.name}:`);
+                        if (pin === faculty.pin) {
+                            loginAsFaculty(faculty);
+                        } else {
+                            alert('Invalid PIN. Please try again.');
+                        }
+                    }
+                }
+            });
+            
+            // Office staff login
+            document.getElementById('office-login-btn').addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (username === 'civiloffice' && password === 'Civil@2025') {
+                    const staff = state.officeStaff[0];
+                    loginAsOfficeStaff(staff);
+                } else {
+                    alert('Invalid username or password. Please try again.');
+                }
+            });
+        }
+
+        function setupMainApp() {
+            // Tab navigation
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                logout();
+            });
+            
+            // File management
+            document.getElementById('add-file-btn').addEventListener('click', function() {
+                document.getElementById('add-file-form-container').style.display = 'block';
+                generateFileId();
+                populateFacultySelectForFiles();
+            });
+            
+            document.getElementById('cancel-add-file-btn').addEventListener('click', function() {
+                document.getElementById('add-file-form-container').style.display = 'none';
+            });
+            
+            document.getElementById('add-file-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewFile();
+            });
+            
+            // Hall booking
+            document.getElementById('new-booking-btn').addEventListener('click', function() {
+                document.getElementById('booking-form-container').style.display = 'block';
+                populateFacultySelectForBooking();
+            });
+            
+            document.getElementById('cancel-booking-btn').addEventListener('click', function() {
+                document.getElementById('booking-form-container').style.display = 'none';
+            });
+            
+            document.getElementById('booking-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitBooking();
+            });
+            
+            // Leave management
+            document.getElementById('manage-leaves-btn').addEventListener('click', function() {
+                document.getElementById('faculty-leave-view').style.display = 'none';
+                document.getElementById('office-leave-management').style.display = 'block';
+            });
+            
+            document.getElementById('update-leave-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateFacultyLeave();
+            });
+            
+            // Messages
+            document.getElementById('new-message-btn').addEventListener('click', function() {
+                document.getElementById('new-message-form').style.display = 'block';
+                populateMessageRecipients();
+            });
+            
+            document.getElementById('cancel-message-btn').addEventListener('click', function() {
+                document.getElementById('new-message-form').style.display = 'none';
+            });
+            
+            document.getElementById('message-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                sendMessage();
+            });
+            
+            // Settings
+            document.getElementById('change-pin-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                changePin();
+            });
+            
+            // Modal close buttons
+            const closeButtons = document.querySelectorAll('.close, .modal');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (e.target === this || e.target.classList.contains('close')) {
+                        this.closest('.modal').style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        function populateFacultySelection() {
+            const facultyGrid = document.getElementById('faculty-grid');
+            facultyGrid.innerHTML = '';
+            
+            state.faculty.forEach(faculty => {
+                const facultyCard = document.createElement('div');
+                facultyCard.className = 'faculty-card';
+                facultyCard.setAttribute('data-id', faculty.id);
+                facultyCard.innerHTML = `
+                    <div class="faculty-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="faculty-name">${faculty.name}</div>
+                    <div style="font-size: 0.8rem; color: var(--gray);">${faculty.designation}</div>
+                `;
+                facultyGrid.appendChild(facultyCard);
+            });
+        }
+
+        function loginAsFaculty(faculty) {
+            state.currentUser = faculty;
+            state.currentRole = 'faculty';
+            
+            // Update UI
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            
+            document.getElementById('current-user').textContent = faculty.name;
+            document.getElementById('current-role').textContent = faculty.designation;
+            
+            // Set faculty name in booking form
+            document.getElementById('faculty-name-booking').value = faculty.name;
+            
+            // Show/hide appropriate UI elements
+            document.getElementById('faculty-only').style.display = 'block';
+            document.getElementById('office-staff-only').style.display = 'none';
+            document.getElementById('add-file-btn').style.display = 'none';
+            document.getElementById('actions-header').style.display = 'none';
+            document.getElementById('manage-leaves-btn').style.display = 'none';
+            document.getElementById('faculty-leave-view').style.display = 'block';
+            document.getElementById('office-leave-management').style.display = 'none';
+            document.getElementById('leave-actions-header').style.display = 'none';
+            document.getElementById('settings-tab').style.display = 'block';
+            document.getElementById('faculty-settings').style.display = 'block';
+            
+            // Update dashboard with user-specific data
+            updateDashboard();
+            updateFilesTable();
+            updateMovementsTable();
+            updateBookingsTable();
+            updateLeaveData();
+            updateMessages();
+        }
+
+        function loginAsOfficeStaff(staff) {
+            state.currentUser = staff;
+            state.currentRole = 'office-staff';
+            
+            // Update UI
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            
+            document.getElementById('current-user').textContent = staff.name;
+            document.getElementById('current-role').textContent = staff.designation;
+            
+            // Show/hide appropriate UI elements
+            document.getElementById('faculty-only').style.display = 'none';
+            document.getElementById('office-staff-only').style.display = 'block';
+            document.getElementById('add-file-btn').style.display = 'inline-block';
+            document.getElementById('actions-header').style.display = 'table-cell';
+            document.getElementById('manage-leaves-btn').style.display = 'inline-block';
+            document.getElementById('faculty-leave-view').style.display = 'none';
+            document.getElementById('office-leave-management').style.display = 'block';
+            document.getElementById('leave-actions-header').style.display = 'table-cell';
+            document.getElementById('settings-tab').style.display = 'none';
+            document.getElementById('faculty-settings').style.display = 'none';
+            
+            // Update dashboard with user-specific data
+            updateDashboard();
+            updateFilesTable();
+            updateMovementsTable();
+            updateBookingsTable();
+            updateLeaveData();
+            updateMessages();
+            
+            // Populate faculty select for leave management
+            populateFacultySelect();
+        }
+
+        function logout() {
+            state.currentUser = null;
+            state.currentRole = null;
+            
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('main-app').style.display = 'none';
+            
+            // Reset to faculty selection
+            document.querySelector('.role-option[data-role="faculty"]').classList.add('active');
+            document.querySelector('.role-option[data-role="office-staff"]').classList.remove('active');
+            document.getElementById('faculty-selection').style.display = 'block';
+            document.getElementById('office-staff-login').style.display = 'none';
+        }
+
+        function generateSampleData() {
+            // Generate empty sample data (fresh start)
+            state.files = [];
+            state.movements = [];
+            state.bookings = [];
+            state.leaves = [];
+            state.messages = [];
+            state.fileCounter = 1;
+        }
+
+        function updateDashboard() {
+            // Update file counts
+            document.getElementById('total-files').textContent = state.files.length;
+            document.getElementById('active-files').textContent = state.files.filter(f => f.status === 'Active').length;
+            document.getElementById('total-bookings').textContent = state.bookings.length;
+            document.getElementById('total-leaves').textContent = state.leaves.length;
+            
+            // Update recent movements
+            const recentMovements = document.getElementById('recent-movements');
+            recentMovements.innerHTML = '';
+            
+            const recentMovementsData = state.movements.slice(0, 5);
+            if (recentMovementsData.length === 0) {
+                recentMovements.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--gray);">No recent file movements</td></tr>';
+            } else {
+                recentMovementsData.forEach(movement => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${movement.fileId}</td>
+                        <td>${movement.fileName}</td>
+                        <td>${movement.from}</td>
+                        <td>${movement.to}</td>
+                        <td>${movement.date}</td>
+                    `;
+                    recentMovements.appendChild(row);
+                });
+            }
+            
+            // Update upcoming bookings
+            const upcomingBookings = document.getElementById('upcoming-bookings');
+            upcomingBookings.innerHTML = '';
+            
+            const upcomingBookingsData = state.bookings.slice(0, 5);
+            if (upcomingBookingsData.length === 0) {
+                upcomingBookings.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gray);">No upcoming hall bookings</td></tr>';
+            } else {
+                upcomingBookingsData.forEach(booking => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${booking.hall}</td>
+                        <td>${booking.faculty}</td>
+                        <td>${booking.date}</td>
+                        <td>${booking.time}</td>
+                    `;
+                    upcomingBookings.appendChild(row);
+                });
+            }
+            
+            // Update files requiring attention
+            const attentionFiles = document.getElementById('attention-files');
+            attentionFiles.innerHTML = '';
+            
+            const attentionFilesData = state.files.filter(f => f.department === 'Civil Office' && f.status === 'Active');
+            if (attentionFilesData.length === 0) {
+                attentionFiles.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray);">No files requiring action</td></tr>';
+            } else {
+                attentionFilesData.forEach(file => {
+                    const daysHeld = Math.floor((new Date() - new Date(file.createdDate)) / (1000 * 60 * 60 * 24));
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${file.id}</td>
+                        <td>${file.name}</td>
+                        <td>${file.faculty}</td>
+                        <td>${file.department}</td>
+                        <td>${daysHeld}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn btn-warning btn-sm alert-office-btn" data-id="${file.id}">
+                                <i class="fas fa-bell"></i> Alert Office
+                            </button>
+                        </td>
+                    `;
+                    attentionFiles.appendChild(row);
+                });
+                
+                // Add event listeners to alert office buttons
+                document.querySelectorAll('.alert-office-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const fileId = this.getAttribute('data-id');
+                        alertOfficeStaff(fileId);
+                    });
+                });
+            }
+        }
+
+        function updateFilesTable() {
+            const filesTable = document.getElementById('files-table');
+            filesTable.innerHTML = '';
+            
+            if (state.files.length === 0) {
+                filesTable.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray);">No files found</td></tr>';
+                return;
+            }
+            
+            state.files.forEach(file => {
+                const row = document.createElement('tr');
+                
+                let statusBadge = '';
+                if (file.status === 'Active') {
+                    statusBadge = '<span class="badge badge-success">Active</span>';
+                } else if (file.status === 'Pending HOD Signature') {
+                    statusBadge = '<span class="badge badge-warning">Pending HOD Signature</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-secondary">' + file.status + '</span>';
+                }
+                
+                let actions = '';
+                if (state.currentRole === 'office-staff') {
+                    actions = `
+                        <button class="btn btn-info btn-sm view-file-btn" data-id="${file.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-primary btn-sm move-file-btn" data-id="${file.id}">
+                            <i class="fas fa-exchange-alt"></i> Move
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-file-btn" data-id="${file.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    `;
+                } else {
+                    actions = `
+                        <button class="btn btn-info btn-sm view-file-btn" data-id="${file.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    `;
+                }
+                
+                row.innerHTML = `
+                    <td>${file.id}</td>
+                    <td>${file.name}</td>
+                    <td>${file.faculty}</td>
+                    <td>${file.department}</td>
+                    <td>${statusBadge}</td>
+                    <td>${actions}</td>
+                `;
+                
+                filesTable.appendChild(row);
+            });
+            
+            // Add event listeners to file action buttons
+            document.querySelectorAll('.view-file-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const fileId = this.getAttribute('data-id');
+                    viewFileDetails(fileId);
+                });
+            });
+            
+            document.querySelectorAll('.move-file-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const fileId = this.getAttribute('data-id');
+                    openMoveFileModal(fileId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-file-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const fileId = this.getAttribute('data-id');
+                    deleteFile(fileId);
+                });
+            });
+        }
+
+        function updateMovementsTable() {
+            const movementsTable = document.getElementById('movements-table');
+            movementsTable.innerHTML = '';
+            
+            if (state.movements.length === 0) {
+                movementsTable.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--gray);">No file movements found</td></tr>';
+                return;
+            }
+            
+            state.movements.forEach(movement => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${movement.id}</td>
+                    <td>${movement.fileId}</td>
+                    <td>${movement.fileName}</td>
+                    <td>${movement.from}</td>
+                    <td>${movement.to}</td>
+                    <td>${movement.date}</td>
+                    <td>${movement.remarks}</td>
+                `;
+                movementsTable.appendChild(row);
+            });
+        }
+
+        function updateBookingsTable() {
+            const bookingsTable = document.getElementById('hall-bookings-table');
+            bookingsTable.innerHTML = '';
+            
+            if (state.bookings.length === 0) {
+                bookingsTable.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--gray);">No hall bookings found</td></tr>';
+                return;
+            }
+            
+            state.bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                
+                let statusBadge = '';
+                if (booking.status === 'Confirmed') {
+                    statusBadge = '<span class="badge badge-success">Confirmed</span>';
+                } else if (booking.status === 'Pending') {
+                    statusBadge = '<span class="badge badge-warning">Pending</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-secondary">' + booking.status + '</span>';
+                }
+                
+                let actions = '';
+                if (state.currentRole === 'office-staff') {
+                    actions = `
+                        <button class="btn btn-info btn-sm view-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-primary btn-sm edit-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    `;
+                } else if (booking.faculty === state.currentUser.name) {
+                    actions = `
+                        <button class="btn btn-info btn-sm view-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-primary btn-sm edit-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    `;
+                } else {
+                    actions = `
+                        <button class="btn btn-info btn-sm view-booking-btn" data-id="${booking.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    `;
+                }
+                
+                row.innerHTML = `
+                    <td>${booking.id}</td>
+                    <td>${booking.hall}</td>
+                    <td>${booking.faculty}</td>
+                    <td>${booking.program}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.time}</td>
+                    <td>${booking.remarks}</td>
+                    <td>${statusBadge}</td>
+                    <td>${actions}</td>
+                `;
+                
+                bookingsTable.appendChild(row);
+            });
+            
+            // Add event listeners to booking action buttons
+            document.querySelectorAll('.delete-booking-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookingId = this.getAttribute('data-id');
+                    deleteBooking(bookingId);
+                });
+            });
+        }
+
+        function updateLeaveData() {
+            if (state.currentRole === 'faculty') {
+                // Update faculty leave history
+                const facultyLeaveHistory = document.getElementById('faculty-leave-history');
+                facultyLeaveHistory.innerHTML = '';
+                
+                const userLeaves = state.leaves.filter(leave => leave.faculty === state.currentUser.name);
+                if (userLeaves.length === 0) {
+                    facultyLeaveHistory.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--gray);">No leave records found</td></tr>';
+                } else {
+                    userLeaves.forEach(leave => {
+                        const row = document.createElement('tr');
+                        
+                        let statusBadge = '';
+                        if (leave.status === 'Approved') {
+                            statusBadge = '<span class="badge badge-success">Approved</span>';
+                        } else if (leave.status === 'Pending') {
+                            statusBadge = '<span class="badge badge-warning">Pending</span>';
+                        } else {
+                            statusBadge = '<span class="badge badge-danger">' + leave.status + '</span>';
+                        }
+                        
+                        row.innerHTML = `
+                            <td>${leave.id}</td>
+                            <td>${leave.type}</td>
+                            <td>${leave.from}</td>
+                            <td>${leave.to}</td>
+                            <td>${leave.days}</td>
+                            <td>${leave.reason}</td>
+                            <td>${statusBadge}</td>
+                        `;
+                        
+                        facultyLeaveHistory.appendChild(row);
+                    });
+                }
+                
+                // Update leave stats for faculty
+                updateFacultyLeaveStats();
+            } else {
+                // Update faculty leave summary for office staff
+                const facultyLeaveSummary = document.getElementById('faculty-leave-summary');
+                facultyLeaveSummary.innerHTML = '';
+                
+                state.faculty.forEach(faculty => {
+                    const facultyLeaves = state.leaves.filter(leave => leave.faculty === faculty.name);
+                    
+                    const clUsed = facultyLeaves.filter(leave => leave.type === 'CL').reduce((sum, leave) => sum + leave.days, 0);
+                    const sclUsed = facultyLeaves.filter(leave => leave.type === 'SCL').reduce((sum, leave) => sum + leave.days, 0);
+                    const odUsed = facultyLeaves.filter(leave => leave.type === 'OD').reduce((sum, leave) => sum + leave.days, 0);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${faculty.name}</td>
+                        <td>${clUsed}</td>
+                        <td>${8 - clUsed}</td>
+                        <td>${sclUsed}</td>
+                        <td>${15 - sclUsed}</td>
+                        <td>${odUsed}</td>
+                        <td>${15 - odUsed}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm update-leave-btn" data-faculty="${faculty.name}">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
+                        </td>
+                    `;
+                    
+                    facultyLeaveSummary.appendChild(row);
+                });
+                
+                // Update all leave records table for office staff
+                updateAllLeaveRecords();
+                
+                // Add event listeners to update leave buttons
+                document.querySelectorAll('.update-leave-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const facultyName = this.getAttribute('data-faculty');
+                        document.getElementById('faculty-select').value = facultyName;
+                    });
+                });
+            }
+        }
+
+        function updateFacultyLeaveStats() {
+            const userLeaves = state.leaves.filter(leave => leave.faculty === state.currentUser.name);
+            
+            const clUsed = userLeaves.filter(leave => leave.type === 'CL').reduce((sum, leave) => sum + leave.days, 0);
+            const sclUsed = userLeaves.filter(leave => leave.type === 'SCL').reduce((sum, leave) => sum + leave.days, 0);
+            const odUsed = userLeaves.filter(leave => leave.type === 'OD').reduce((sum, leave) => sum + leave.days, 0);
+            
+            // Update CL progress
+            const clProgress = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(1) .leave-progress-bar');
+            const clUsedText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(1) div:nth-child(4)');
+            const clRemainingText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(1) div:nth-child(5)');
+            
+            clProgress.style.width = `${(clUsed / 8) * 100}%`;
+            clUsedText.textContent = `Used: ${clUsed} days`;
+            clRemainingText.textContent = `Remaining: ${8 - clUsed} days`;
+            
+            // Update SCL progress
+            const sclProgress = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(2) .leave-progress-bar');
+            const sclUsedText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(2) div:nth-child(4)');
+            const sclRemainingText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(2) div:nth-child(5)');
+            
+            sclProgress.style.width = `${(sclUsed / 15) * 100}%`;
+            sclUsedText.textContent = `Used: ${sclUsed} days`;
+            sclRemainingText.textContent = `Remaining: ${15 - sclUsed} days`;
+            
+            // Update OD progress
+            const odProgress = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(3) .leave-progress-bar');
+            const odUsedText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(3) div:nth-child(4)');
+            const odRemainingText = document.querySelector('#faculty-leave-view .leave-stat-card:nth-child(3) div:nth-child(5)');
+            
+            odProgress.style.width = `${(odUsed / 15) * 100}%`;
+            odUsedText.textContent = `Used: ${odUsed} days`;
+            odRemainingText.textContent = `Remaining: ${15 - odUsed} days`;
+        }
+
+        function updateAllLeaveRecords() {
+            const allLeaveRecords = document.getElementById('all-leave-records');
+            allLeaveRecords.innerHTML = '';
+            
+            if (state.leaves.length === 0) {
+                allLeaveRecords.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--gray);">No leave records found</td></tr>';
+                return;
+            }
+            
+            state.leaves.forEach(leave => {
+                const row = document.createElement('tr');
+                
+                let statusBadge = '';
+                if (leave.status === 'Approved') {
+                    statusBadge = '<span class="badge badge-success">Approved</span>';
+                } else if (leave.status === 'Pending') {
+                    statusBadge = '<span class="badge badge-warning">Pending</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-danger">' + leave.status + '</span>';
+                }
+                
+                row.innerHTML = `
+                    <td>${leave.id}</td>
+                    <td>${leave.faculty}</td>
+                    <td>${leave.type}</td>
+                    <td>${leave.from}</td>
+                    <td>${leave.to}</td>
+                    <td>${leave.days}</td>
+                    <td>${leave.reason}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm delete-leave-btn" data-id="${leave.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                
+                allLeaveRecords.appendChild(row);
+            });
+            
+            // Add event listeners to delete leave buttons
+            document.querySelectorAll('.delete-leave-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const leaveId = this.getAttribute('data-id');
+                    deleteLeave(leaveId);
+                });
+            });
+        }
+
+        function deleteLeave(leaveId) {
+            if (confirm('Are you sure you want to delete this leave record?')) {
+                const leaveIndex = state.leaves.findIndex(leave => leave.id === leaveId);
+                if (leaveIndex !== -1) {
+                    state.leaves.splice(leaveIndex, 1);
+                    updateLeaveData();
+                    showNotification('Leave record deleted successfully', 'success');
+                }
+            }
+        }
+
+        function deleteFile(fileId) {
+            if (confirm('Are you sure you want to delete this file?')) {
+                const fileIndex = state.files.findIndex(file => file.id === fileId);
+                if (fileIndex !== -1) {
+                    state.files.splice(fileIndex, 1);
+                    updateFilesTable();
+                    updateDashboard();
+                    showNotification('File deleted successfully', 'success');
+                }
+            }
+        }
+
+        function deleteBooking(bookingId) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                const bookingIndex = state.bookings.findIndex(booking => booking.id === bookingId);
+                if (bookingIndex !== -1) {
+                    state.bookings.splice(bookingIndex, 1);
+                    updateBookingsTable();
+                    updateDashboard();
+                    showNotification('Booking deleted successfully', 'success');
+                }
+            }
+        }
+
+        function updateMessages() {
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.innerHTML = '';
+            
+            // Filter messages based on user role
+            let userMessages = [];
+            if (state.currentRole === 'faculty') {
+                userMessages = state.messages.filter(msg => 
+                    msg.to === 'All Faculty' || msg.to === state.currentUser.name
+                );
+            } else {
+                userMessages = state.messages.filter(msg => 
+                    msg.to === 'Office Staff' || msg.from === state.currentUser.name || msg.to === 'All Faculty'
+                );
+            }
+            
+            // Sort by date (newest first)
+            userMessages.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (userMessages.length === 0) {
+                messagesContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray);">No messages found.</p>';
+                return;
+            }
+            
+            userMessages.forEach(message => {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+                
+                const urgentBadge = message.urgent ? '<span class="urgent-badge">URGENT</span>' : '';
+                const unreadIndicator = !message.read ? '<div style="display: inline-block; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; margin-right: 5px;"></div>' : '';
+                
+                messageItem.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-sender">
+                            ${unreadIndicator}From: ${message.from} ${urgentBadge}
+                        </div>
+                        <div class="message-text">
+                            <strong>Subject:</strong> ${message.subject}
+                        </div>
+                        <div class="message-text">
+                            ${message.content}
+                        </div>
+                        <div class="message-time">
+                            ${message.date}
+                        </div>
+                    </div>
+                    <div class="message-actions">
+                        <div class="message-reply">
+                            <i class="fas fa-reply"></i> Reply
+                        </div>
+                        <div class="message-mark-read">
+                            <i class="fas fa-check"></i> Mark Read
+                        </div>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(messageItem);
+            });
+            
+            // Update message indicator
+            const unreadCount = userMessages.filter(msg => !msg.read).length;
+            if (unreadCount > 0) {
+                document.getElementById('message-indicator').style.display = 'block';
+                document.getElementById('message-count').textContent = unreadCount;
+            } else {
+                document.getElementById('message-indicator').style.display = 'none';
+            }
+        }
+
+        function populateFacultySelect() {
+            const facultySelect = document.getElementById('faculty-select');
+            facultySelect.innerHTML = '<option value="">Select Faculty</option>';
+            
+            state.faculty.forEach(faculty => {
+                const option = document.createElement('option');
+                option.value = faculty.name;
+                option.textContent = faculty.name;
+                facultySelect.appendChild(option);
+            });
+        }
+
+        function populateFacultySelectForFiles() {
+            const facultySelect = document.getElementById('file-faculty');
+            facultySelect.innerHTML = '<option value="">Select Faculty</option>';
+            
+            state.faculty.forEach(faculty => {
+                const option = document.createElement('option');
+                option.value = faculty.name;
+                option.textContent = faculty.name;
+                facultySelect.appendChild(option);
+            });
+        }
+
+        function populateFacultySelectForBooking() {
+            const facultySelect = document.getElementById('faculty-name-booking');
+            facultySelect.innerHTML = '<option value="">Select Faculty</option>';
+            
+            state.faculty.forEach(faculty => {
+                const option = document.createElement('option');
+                option.value = faculty.name;
+                option.textContent = faculty.name;
+                facultySelect.appendChild(option);
+            });
+            
+            // If faculty user, preselect their name
+            if (state.currentRole === 'faculty') {
+                facultySelect.value = state.currentUser.name;
+            }
+        }
+
+        function populateMessageRecipients() {
+            const messageTo = document.getElementById('message-to');
+            messageTo.innerHTML = '<option value="">Select Recipient</option><option value="all-faculty">All Faculty</option><option value="office-staff">Office Staff</option>';
+            
+            state.faculty.forEach(faculty => {
+                const option = document.createElement('option');
+                option.value = faculty.name;
+                option.textContent = faculty.name;
+                messageTo.appendChild(option);
+            });
+        }
+
+        function generateFileId() {
+            const year = new Date().getFullYear();
+            const fileId = `CE/${year}/${state.fileCounter.toString().padStart(3, '0')}`;
+            document.getElementById('file-id').value = fileId;
+        }
+
+        function addNewFile() {
+            const fileId = document.getElementById('file-id').value;
+            const fileName = document.getElementById('file-name').value;
+            const fileFaculty = document.getElementById('file-faculty').value;
+            const fileDepartment = document.getElementById('file-department').value;
+            const fileDescription = document.getElementById('file-description').value;
+            
+            if (!fileName || !fileFaculty || !fileDepartment) {
+                showNotification('Please fill all required fields', 'warning');
+                return;
+            }
+            
+            // Create new file
+            const newFile = {
+                id: fileId,
+                name: fileName,
+                faculty: fileFaculty,
+                department: fileDepartment,
+                description: fileDescription,
+                status: 'Active',
+                createdDate: new Date().toISOString().split('T')[0]
+            };
+            
+            state.files.push(newFile);
+            state.fileCounter++;
+            
+            // Reset form and update UI
+            document.getElementById('add-file-form').reset();
+            document.getElementById('add-file-form-container').style.display = 'none';
+            
+            updateFilesTable();
+            updateDashboard();
+            
+            showNotification(`File added successfully. File ID: ${fileId}`, 'success');
+        }
+
+        function viewFileDetails(fileId) {
+            const file = state.files.find(f => f.id === fileId);
+            if (!file) return;
+            
+            const modal = document.getElementById('file-details-modal');
+            const content = document.getElementById('file-details-content');
+            
+            content.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <strong>File ID:</strong> ${file.id}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>File Name:</strong> ${file.name}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Faculty:</strong> ${file.faculty}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Current Department:</strong> ${file.department}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Status:</strong> ${file.status}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Created Date:</strong> ${file.createdDate}
+                </div>
+                <div>
+                    <strong>Description:</strong> 
+                    <p>${file.description}</p>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        function openMoveFileModal(fileId) {
+            const file = state.files.find(f => f.id === fileId);
+            if (!file) return;
+            
+            const modal = document.getElementById('file-movement-modal');
+            
+            document.getElementById('file-id-movement').value = file.id;
+            document.getElementById('file-name-movement').value = file.name;
+            document.getElementById('current-location').value = file.department;
+            
+            modal.style.display = 'flex';
+            
+            // Set up form submission
+            document.getElementById('file-movement-form').onsubmit = function(e) {
+                e.preventDefault();
+                moveFile(fileId);
+            };
+        }
+
+        function moveFile(fileId) {
+            const newLocation = document.getElementById('new-location').value;
+            const remarks = document.getElementById('movement-remarks').value;
+            
+            if (!newLocation || !remarks) {
+                showNotification('Please fill all required fields', 'warning');
+                return;
+            }
+            
+            // Update file location
+            const file = state.files.find(f => f.id === fileId);
+            const fromLocation = file.department;
+            
+            // If moving to "Same Faculty", don't change the department
+            if (newLocation === 'Same Faculty') {
+                showNotification('File remains with the same faculty', 'info');
+                document.getElementById('file-movement-modal').style.display = 'none';
+                document.getElementById('file-movement-form').reset();
+                return;
+            }
+            
+            file.department = newLocation;
+            
+            // Add movement record
+            const movementId = 'M' + (state.movements.length + 1).toString().padStart(3, '0');
+            const now = new Date();
+            const movementDate = now.toISOString().split('T')[0] + ' ' + 
+                                now.getHours().toString().padStart(2, '0') + ':' + 
+                                now.getMinutes().toString().padStart(2, '0');
+            
+            state.movements.unshift({
+                id: movementId,
+                fileId: fileId,
+                fileName: file.name,
+                from: fromLocation,
+                to: newLocation,
+                date: movementDate,
+                remarks: remarks
+            });
+            
+            // Close modal and update UI
+            document.getElementById('file-movement-modal').style.display = 'none';
+            document.getElementById('file-movement-form').reset();
+            
+            updateFilesTable();
+            updateMovementsTable();
+            updateDashboard();
+            
+            showNotification(`File ${fileId} moved successfully from ${fromLocation} to ${newLocation}`, 'success');
+        }
+
+        function submitBooking() {
+            const date = document.getElementById('booking-date').value;
+            const faculty = document.getElementById('faculty-name-booking').value;
+            const startTime = document.getElementById('start-time').value;
+            const endTime = document.getElementById('end-time').value;
+            const hall = document.getElementById('hall-name').value;
+            const program = document.getElementById('program-name').value;
+            const remarks = document.getElementById('remarks').value;
+            
+            if (!date || !faculty || !startTime || !endTime || !hall || !program || !remarks) {
+                showNotification('Please fill all required fields', 'warning');
+                return;
+            }
+            
+            // Create new booking
+            const bookingId = 'B' + (state.bookings.length + 1).toString().padStart(3, '0');
+            const newBooking = {
+                id: bookingId,
+                hall: hall,
+                faculty: faculty,
+                program: program,
+                date: date,
+                time: startTime + ' - ' + endTime,
+                remarks: remarks,
+                status: 'Confirmed'
+            };
+            
+            state.bookings.push(newBooking);
+            
+            // Reset form and update UI
+            document.getElementById('booking-form').reset();
+            document.getElementById('booking-form-container').style.display = 'none';
+            
+            updateBookingsTable();
+            updateDashboard();
+            
+            showNotification(`Hall booking submitted successfully. Booking ID: ${bookingId}`, 'success');
+        }
+
+        function updateFacultyLeave() {
+            const faculty = document.getElementById('faculty-select').value;
+            const type = document.getElementById('leave-type').value;
+            const days = parseFloat(document.getElementById('leave-days').value);
+            const startDate = document.getElementById('leave-start-date').value;
+            const endDate = document.getElementById('leave-end-date').value;
+            const reason = document.getElementById('leave-reason').value;
+            
+            if (!faculty || !type || !days || !startDate || !endDate || !reason) {
+                showNotification('Please fill all required fields', 'warning');
+                return;
+            }
+            
+            // Create new leave record
+            const leaveId = 'L' + (state.leaves.length + 1).toString().padStart(3, '0');
+            const newLeave = {
+                id: leaveId,
+                faculty: faculty,
+                type: type,
+                from: startDate,
+                to: endDate,
+                days: days,
+                reason: reason,
+                status: 'Approved'
+            };
+            
+            state.leaves.push(newLeave);
+            
+            // Reset form and update UI
+            document.getElementById('update-leave-form').reset();
+            updateLeaveData();
+            
+            showNotification(`Leave record updated for ${faculty}`, 'success');
+        }
+
+        function sendMessage() {
+            const to = document.getElementById('message-to').value;
+            const subject = document.getElementById('message-subject').value;
+            const content = document.getElementById('message-content').value;
+            const urgent = document.getElementById('urgent-message').checked;
+            
+            if (!to || !subject || !content) {
+                showNotification('Please fill all required fields', 'warning');
+                return;
+            }
+            
+            // Create new message
+            const messageId = 'MSG' + (state.messages.length + 1).toString().padStart(3, '0');
+            const now = new Date();
+            const messageDate = now.toISOString().split('T')[0] + ' ' + 
+                              now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+            
+            let recipientName = to;
+            if (to === 'all-faculty') {
+                recipientName = 'All Faculty';
+            } else if (to === 'office-staff') {
+                recipientName = 'Office Staff';
+            }
+            
+            const newMessage = {
+                id: messageId,
+                from: state.currentUser.name,
+                to: recipientName,
+                subject: subject,
+                content: content,
+                date: messageDate,
+                urgent: urgent,
+                read: false
+            };
+            
+            state.messages.unshift(newMessage);
+            
+            // Reset form and update UI
+            document.getElementById('message-form').reset();
+            document.getElementById('new-message-form').style.display = 'none';
+            updateMessages();
+            
+            showNotification('Message sent successfully', 'success');
+        }
+
+        function alertOfficeStaff(fileId) {
+            const file = state.files.find(f => f.id === fileId);
+            if (!file) return;
+            
+            // Create alert message
+            const messageId = 'MSG' + (state.messages.length + 1).toString().padStart(3, '0');
+            const now = new Date();
+            const messageDate = now.toISOString().split('T')[0] + ' ' + 
+                              now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+            
+            const newMessage = {
+                id: messageId,
+                from: state.currentUser.name,
+                to: 'Office Staff',
+                subject: `File Requiring Action: ${file.id}`,
+                content: `File ${file.id} (${file.name}) requires attention from the office staff. Current location: ${file.department}.`,
+                date: messageDate,
+                urgent: true,
+                read: false
+            };
+            
+            state.messages.unshift(newMessage);
+            updateMessages();
+            
+            showNotification('Office staff has been alerted about this file', 'success');
+        }
+
+        function changePin() {
+            const currentPin = document.getElementById('current-pin').value;
+            const newPin = document.getElementById('new-pin').value;
+            const confirmPin = document.getElementById('confirm-pin').value;
+            
+            if (!currentPin || !newPin || !confirmPin) {
+                showNotification('Please fill all fields', 'warning');
+                return;
+            }
+            
+            if (currentPin !== state.currentUser.pin) {
+                showNotification('Current PIN is incorrect', 'error');
+                return;
+            }
+            
+            if (newPin !== confirmPin) {
+                showNotification('New PIN and confirmation do not match', 'error');
+                return;
+            }
+            
+            // Update PIN
+            state.currentUser.pin = newPin;
+            
+            // Reset form
+            document.getElementById('change-pin-form').reset();
+            
+            showNotification('PIN changed successfully', 'success');
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const content = document.getElementById('notification-content');
+            
+            // Set background color based on type
+            let bgColor = '';
+            switch(type) {
+                case 'success':
+                    bgColor = '#27ae60';
+                    break;
+                case 'warning':
+                    bgColor = '#f39c12';
+                    break;
+                case 'error':
+                    bgColor = '#e74c3c';
+                    break;
+                case 'info':
+                default:
+                    bgColor = '#3498db';
+                    break;
+            }
+            
+            notification.style.backgroundColor = bgColor;
+            content.textContent = message;
+            notification.style.display = 'block';
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                    notification.style.animation = 'slideIn 0.3s ease';
+                }, 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
